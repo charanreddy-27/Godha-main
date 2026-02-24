@@ -9,10 +9,12 @@ import {
   X,
   ChevronDown,
   Search,
+  Heart,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/stores/auth-store';
 import { useCartStore } from '@/stores/cart-store';
+import { useWishlistStore } from '@/stores/wishlist-store';
 import { categories } from '@/lib/categories';
 import { signOut } from '@/lib/auth';
 
@@ -23,6 +25,7 @@ export function Navbar() {
   const user = useAuthStore((s) => s.user);
   const clearUser = useAuthStore((s) => s.clearUser);
   const cartItemCount = useCartStore((s) => s.getTotalItems());
+  const wishlistCount = useWishlistStore((s) => s.getCount());
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -140,6 +143,22 @@ export function Navbar() {
             >
               <Search className="h-5 w-5" />
             </Button>
+
+            {/* Wishlist */}
+            <Link href="/wishlist" className="relative group hidden md:flex">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-ivory-200 text-royal-600 hover:text-lotus-600 rounded-full transition-all duration-300"
+              >
+                <Heart className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-lotus-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center animate-scale-in shadow-sm">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
 
             {user ? (
               <>

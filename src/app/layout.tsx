@@ -4,6 +4,8 @@ import './globals.css';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Providers } from '@/components/layout/Providers';
+import { Analytics } from '@/components/shared/Analytics';
+import { WebsiteJsonLd } from '@/components/shared/JsonLd';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -39,12 +41,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1E3A5F" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <WebsiteJsonLd />
+      </head>
       <body className={dmSans.className}>
         <Providers>
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

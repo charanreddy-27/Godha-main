@@ -1,25 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { storage } from '@/lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
+import { validateUploadFile } from '@/lib/validation';
 
 // POST /api/upload — Upload image to Firebase Storage
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = rateLimit(getClientIp(request), { maxRequests: 20 });
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+    const validation = validateUploadFile(file);
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
+    const validatedFile = validation.data;
+    const bytes = await validatedFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const filename = `${Date.now()}-${file.name}`;
+    const filename = `${Date.now()}-${validatedFile.name}`;
     const storageRef = ref(storage, `products/${filename}`);
 
     await uploadBytes(storageRef, buffer, {
-      contentType: file.type,
+      contentType: validatedFile.type,
     });
 
     const downloadURL = await getDownloadURL(storageRef);

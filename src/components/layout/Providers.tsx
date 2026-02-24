@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { Toaster } from '@/components/ui/sonner';
+import { WhatsAppButton } from '@/components/shared/WhatsAppButton';
 
 /**
  * Client boundary that wraps the entire app.
@@ -15,6 +16,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <>
       {children}
       <Toaster position="top-right" richColors closeButton />
+      <WhatsAppButton />
     </>
   );
 }

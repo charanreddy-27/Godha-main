@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
 
 interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
 // GET /api/orders/[id] — Get single order
-export async function GET(_request: NextRequest, context: RouteContext) {
+export async function GET(request: NextRequest, context: RouteContext) {
+  const rateLimitResponse = rateLimit(getClientIp(request), { maxRequests: 60 });
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const { id } = await context.params;
     const docRef = doc(db, 'orders', id);
@@ -26,6 +30,9 @@ export async function GET(_request: NextRequest, context: RouteContext) {
 
 // PATCH /api/orders/[id] — Update order status
 export async function PATCH(request: NextRequest, context: RouteContext) {
+  const rateLimitResponse = rateLimit(getClientIp(request), { maxRequests: 30 });
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const { id } = await context.params;
     const data = await request.json();

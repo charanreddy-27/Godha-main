@@ -10,9 +10,14 @@ import {
   limit as firestoreLimit,
   serverTimestamp,
 } from 'firebase/firestore';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
+import { validateProductInput } from '@/lib/validation';
 
 // GET /api/products — List & filter products
 export async function GET(request: NextRequest) {
+  const rateLimitResponse = rateLimit(getClientIp(request), { maxRequests: 120 });
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
@@ -64,25 +69,29 @@ export async function GET(request: NextRequest) {
 
 // POST /api/products — Create product
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = rateLimit(getClientIp(request), { maxRequests: 30 });
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const data = await request.json();
-    const { name, price, category, subCategory, description, images, stock, sizes, colors, originalPrice } = data;
-
-    if (!name || !price || !category || !subCategory) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    const validation = validateProductInput(data);
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
+    const validated = validation.data;
+
     const product = {
-      name,
-      price: parseFloat(price),
-      originalPrice: originalPrice ? parseFloat(originalPrice) : null,
-      category,
-      subCategory,
-      description: description || '',
-      images: images || [],
-      stock: parseInt(stock, 10) || 0,
-      sizes: sizes || [],
-      colors: colors || [],
+      name: validated.name,
+      price: validated.price,
+      originalPrice: validated.originalPrice,
+      category: validated.category,
+      subCategory: validated.subCategory,
+      description: validated.description,
+      images: validated.images,
+      stock: validated.stock,
+      sizes: validated.sizes,
+      colors: validated.colors,
       createdAt: serverTimestamp(),
     };
 

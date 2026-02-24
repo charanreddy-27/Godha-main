@@ -4,10 +4,13 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/stores/cart-store';
+import { useWishlistStore } from '@/stores/wishlist-store';
 import { toast } from 'sonner';
-import { Loader2, ShoppingCart, ChevronRight, Star, Truck, ShieldCheck } from 'lucide-react';
+import { Loader2, ShoppingCart, ChevronRight, Star, Truck, ShieldCheck, Heart } from 'lucide-react';
 import Link from 'next/link';
 import type { Product } from '@/types';
+import { SizeGuideButton } from '@/components/product/SizeGuide';
+import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/shared/JsonLd';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -17,6 +20,8 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const addItem = useCartStore((state) => state.addItem);
+  const isWishlisted = useWishlistStore((s) => s.isInWishlist(productId));
+  const toggleWishlist = useWishlistStore((s) => s.toggleItem);
 
   useEffect(() => {
     if (productId) {
@@ -65,6 +70,21 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-ivory-50">
+      {/* Structured Data */}
+      {product && (
+        <>
+          <ProductJsonLd product={product} />
+          <BreadcrumbJsonLd
+            items={[
+              { name: 'Home', url: '/' },
+              { name: product.category, url: `/${product.category}` },
+              { name: product.subCategory, url: `/${product.category}/${product.subCategory}` },
+              { name: product.name, url: `/product/${product.id}` },
+            ]}
+          />
+        </>
+      )}
+
       {/* Premium Breadcrumb */}
       <div className="bg-white/80 backdrop-blur-md border-b border-royal-100/50 sticky top-[80px] z-30">
         <div className="container mx-auto px-4 py-4">
@@ -185,7 +205,7 @@ export default function ProductDetailPage() {
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="text-sm font-bold text-royal-900 uppercase tracking-wide">Select Size</h3>
                   <button className="text-xs text-gold-600 hover:text-gold-700 underline underline-offset-4 decoration-gold-300">
-                    Size Chart
+                    <SizeGuideButton category={product.category} />
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-3">
@@ -247,11 +267,18 @@ export default function ProductDetailPage() {
               )}
 
               <div className="grid grid-cols-2 gap-4 text-xs font-medium text-royal-600 pt-4">
-                <div className="flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-gold-500" />
-                  Free Delivery
-                </div>
-                <div className="flex items-center gap-2">
+                <button
+                  onClick={() => toggleWishlist(product.id, product.name)}
+                  className={`flex items-center justify-center gap-2 py-3 rounded-lg border transition-all duration-300 ${
+                    isWishlisted
+                      ? 'border-lotus-300 bg-lotus-50 text-lotus-600'
+                      : 'border-royal-200 hover:border-lotus-300 hover:bg-lotus-50/50'
+                  }`}
+                >
+                  <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current text-lotus-500' : ''}`} />
+                  {isWishlisted ? 'Wishlisted' : 'Add to Wishlist'}
+                </button>
+                <div className="flex items-center justify-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-gold-500" />
                   Authentic Products
                 </div>

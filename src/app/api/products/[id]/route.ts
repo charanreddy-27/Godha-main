@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
+import { validateProductInput } from '@/lib/validation';
 
 interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
 // GET /api/products/[id] — Get single product
-export async function GET(_request: NextRequest, context: RouteContext) {
+export async function GET(request: NextRequest, context: RouteContext) {
+  const rateLimitResponse = rateLimit(getClientIp(request), { maxRequests: 120 });
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const { id } = await context.params;
     const docRef = doc(db, 'products', id);
@@ -26,6 +31,9 @@ export async function GET(_request: NextRequest, context: RouteContext) {
 
 // PUT /api/products/[id] — Update product
 export async function PUT(request: NextRequest, context: RouteContext) {
+  const rateLimitResponse = rateLimit(getClientIp(request), { maxRequests: 30 });
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const { id } = await context.params;
     const data = await request.json();
@@ -36,17 +44,24 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
+    // Validate input (partial updates ok — only validate provided fields)
+    const validation = validateProductInput({ ...docSnap.data(), ...data });
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
+    }
+
+    const validated = validation.data;
     const updateData: Record<string, unknown> = {};
-    if (data.name !== undefined) updateData.name = data.name;
-    if (data.price !== undefined) updateData.price = parseFloat(data.price);
-    if (data.originalPrice !== undefined) updateData.originalPrice = data.originalPrice ? parseFloat(data.originalPrice) : null;
-    if (data.category !== undefined) updateData.category = data.category;
-    if (data.subCategory !== undefined) updateData.subCategory = data.subCategory;
-    if (data.description !== undefined) updateData.description = data.description;
-    if (data.images !== undefined) updateData.images = data.images;
-    if (data.stock !== undefined) updateData.stock = parseInt(data.stock, 10);
-    if (data.sizes !== undefined) updateData.sizes = data.sizes;
-    if (data.colors !== undefined) updateData.colors = data.colors;
+    if (data.name !== undefined) updateData.name = validated.name;
+    if (data.price !== undefined) updateData.price = validated.price;
+    if (data.originalPrice !== undefined) updateData.originalPrice = validated.originalPrice;
+    if (data.category !== undefined) updateData.category = validated.category;
+    if (data.subCategory !== undefined) updateData.subCategory = validated.subCategory;
+    if (data.description !== undefined) updateData.description = validated.description;
+    if (data.images !== undefined) updateData.images = validated.images;
+    if (data.stock !== undefined) updateData.stock = validated.stock;
+    if (data.sizes !== undefined) updateData.sizes = validated.sizes;
+    if (data.colors !== undefined) updateData.colors = validated.colors;
 
     await updateDoc(docRef, updateData);
 
@@ -58,7 +73,10 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 }
 
 // DELETE /api/products/[id] — Delete product
-export async function DELETE(_request: NextRequest, context: RouteContext) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
+  const rateLimitResponse = rateLimit(getClientIp(request), { maxRequests: 30 });
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const { id } = await context.params;
     const docRef = doc(db, 'products', id);
