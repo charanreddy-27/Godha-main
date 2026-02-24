@@ -6,10 +6,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://godhacollections.c
  * Dynamic sitemap generation for SEO.
  * Includes all static pages and category/subcategory pages.
  */
-export default function sitemap(): MetadataRoute['sitemap'] {
+export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const staticPages: MetadataRoute['sitemap'] = [
+  const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: now, changeFrequency: 'daily', priority: 1.0 },
     { url: `${BASE_URL}/sarees`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
     { url: `${BASE_URL}/ethnic-wear`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
@@ -24,7 +24,7 @@ export default function sitemap(): MetadataRoute['sitemap'] {
   ];
 
   // Subcategory pages
-  const subcategoryPages: MetadataRoute['sitemap'] = [
+  const subcategoryPages: MetadataRoute.Sitemap = [
     // Sarees
     { url: `${BASE_URL}/sarees/kanchivaram`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/sarees/kalamkari`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
