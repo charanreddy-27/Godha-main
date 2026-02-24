@@ -2,10 +2,7 @@
 module.exports = {
     darkMode: ["class"],
     content: [
-      './pages/**/*.{js,jsx}',
-      './components/**/*.{js,jsx}',
-      './app/**/*.{js,jsx}',
-      './src/**/*.{js,jsx}',
+      './src/**/*.{ts,tsx}',
     ],
     prefix: "",
     theme: {
@@ -156,9 +153,8 @@ module.exports = {
     		},
     		fontFamily: {
     			display: ['Playfair Display', 'Georgia', 'serif'],
-    			body: ['Inter', 'system-ui', 'sans-serif'],
+    			body: ['DM Sans', 'system-ui', 'sans-serif'],
     			elegant: ['Cormorant Garamond', 'Georgia', 'serif'],
-    			luxury: ['Bodoni Moda', 'Playfair Display', 'serif'],
     		},
     		borderRadius: {
     			lg: 'var(--radius)',
