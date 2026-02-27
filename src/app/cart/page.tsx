@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useCartStore } from '@/stores/cart-store';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -52,9 +53,9 @@ export default function CartPage() {
                 <CardContent className="p-6">
                   <div className="flex gap-6">
                     {/* Product Image */}
-                    <div className="w-28 h-28 flex-shrink-0 bg-gradient-to-br from-ivory-100 to-gold-50 rounded-xl overflow-hidden shadow-md">
+                    <div className="w-28 h-28 flex-shrink-0 bg-gradient-to-br from-ivory-100 to-gold-50 rounded-xl overflow-hidden shadow-md relative">
                       {item.images && item.images[0] ? (
-                        <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
+                        <Image src={item.images[0]} alt={item.name} fill sizes="112px" className="object-cover" loading="lazy" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-4xl">👗</div>
                       )}

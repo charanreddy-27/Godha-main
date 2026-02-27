@@ -8,6 +8,7 @@ import { useWishlistStore } from '@/stores/wishlist-store';
 import { toast } from 'sonner';
 import { Loader2, ShoppingCart, ChevronRight, Star, Truck, ShieldCheck, Heart } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Product } from '@/types';
 import { SizeGuideButton } from '@/components/product/SizeGuide';
 import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/shared/JsonLd';
@@ -131,10 +132,13 @@ export default function ProductDetailPage() {
                           : 'border-transparent hover:border-gold-300'
                       }`}
                     >
-                      <img
+                      <Image
                         src={img}
                         alt={`${product.name} ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                        loading="lazy"
                       />
                     </button>
                   ))}
@@ -144,10 +148,13 @@ export default function ProductDetailPage() {
               {/* Main Image */}
               <div className="flex-1 aspect-[3/4] lg:h-[600px] bg-white rounded-2xl overflow-hidden shadow-luxury border border-royal-50 relative group">
                 {product.images && product.images[selectedImage] ? (
-                  <img
+                  <Image
                     src={product.images[selectedImage]}
                     alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 58vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    priority
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-royal-200">

@@ -1,9 +1,9 @@
 'use client';
 
 import { PageHeader } from '@/components/layout/PageHeader';
-import { motion } from 'framer-motion';
 import { ShieldCheck, Truck, Sparkles, Heart } from 'lucide-react';
-import type { ReactNode } from 'react';
+import Image from 'next/image';
+import type { CSSProperties, ReactNode } from 'react';
 
 interface Stat {
   label: string;
@@ -57,29 +57,23 @@ export default function AboutPage() {
 
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
+          <div className="relative animate-fade-in-up">
             <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-luxury">
               <div className="absolute inset-0 bg-royal-900/20 mix-blend-multiply z-10" />
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1974&auto=format&fit=crop"
                 alt="Weaving loom"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+                priority
               />
             </div>
             <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-royal-100 rounded-full -z-10 blur-3xl opacity-50" />
             <div className="absolute -top-8 -left-8 w-64 h-64 bg-gold-100 rounded-full -z-10 blur-3xl opacity-50" />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
+          <div className="animate-fade-in-up" style={{ animationDelay: '150ms' }}>
             <h2 className="font-display text-4xl font-bold text-royal-900 mb-6">Preserving the Art of Handloom</h2>
             <div className="space-y-6 text-lg text-royal-700 leading-relaxed">
               <p>
@@ -97,7 +91,7 @@ export default function AboutPage() {
                 cultural identity.
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Stats */}
@@ -123,20 +117,17 @@ export default function AboutPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {values.map((val, idx) => (
-            <motion.div
+            <div
               key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl shadow-luxury hover:-translate-y-2 transition-transform duration-500 border border-royal-50"
+              className="bg-white p-8 rounded-2xl shadow-luxury hover:-translate-y-2 transition-transform duration-500 border border-royal-50 animate-fade-in-up"
+              style={{ animationDelay: `${idx * 100}ms` }}
             >
               <div className="w-16 h-16 bg-ivory-50 rounded-full flex items-center justify-center mb-6 mx-auto border border-gold-100">
                 {val.icon}
               </div>
               <h3 className="font-display text-xl font-bold text-royal-900 mb-3 text-center">{val.title}</h3>
               <p className="text-royal-600 text-center leading-relaxed">{val.description}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

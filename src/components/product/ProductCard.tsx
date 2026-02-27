@@ -3,6 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShoppingCart, Heart, Eye } from 'lucide-react';
 import { useState } from 'react';
 import type { Product } from '@/types';
@@ -33,10 +34,13 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <Link href={`/product/${product.id}`}>
           <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-ivory-50 to-gold-50/20">
             {product.images && product.images[0] ? (
-              <img
+              <Image
                 src={product.images[0]}
                 alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-ivory-100 to-ivory-50">

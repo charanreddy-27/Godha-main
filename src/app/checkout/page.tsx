@@ -9,6 +9,7 @@ import { useCartStore } from '@/stores/cart-store';
 import { useAuthStore } from '@/stores/auth-store';
 import { toast } from 'sonner';
 import { Loader2, CreditCard, Truck, ShieldCheck } from 'lucide-react';
+import Image from 'next/image';
 
 interface CheckoutForm {
   fullName: string;
@@ -277,9 +278,9 @@ export default function CheckoutPage() {
                 <div className="space-y-4 mb-6">
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-3">
-                      <div className="w-16 h-16 bg-ivory-100 rounded flex-shrink-0 overflow-hidden border border-royal-100">
+                      <div className="w-16 h-16 bg-ivory-100 rounded flex-shrink-0 overflow-hidden border border-royal-100 relative">
                         {item.images && item.images[0] ? (
-                          <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
+                          <Image src={item.images[0]} alt={item.name} fill sizes="64px" className="object-cover" loading="lazy" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-2xl">👗</div>
                         )}

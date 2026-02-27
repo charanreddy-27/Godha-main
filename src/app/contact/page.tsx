@@ -2,7 +2,6 @@
 
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Send } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 import { toast } from 'sonner';
@@ -81,11 +80,7 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-3xl p-8 md:p-12 shadow-luxury border border-royal-50"
-            >
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-luxury border border-royal-50 animate-fade-in-up">
               <h2 className="font-display text-3xl font-bold text-royal-900 mb-8">Send us a Message</h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -144,7 +139,7 @@ export default function ContactPage() {
                   )}
                 </Button>
               </form>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   ShoppingCart,
   User,
@@ -29,7 +30,7 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -73,10 +74,13 @@ export function Navbar() {
           <Link href="/" className="flex items-center group">
             <div className="relative">
               <div className="absolute -inset-2 bg-gradient-to-r from-gold-400/20 to-royal-400/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <img
+              <Image
                 src="/images/godha-logo.png"
                 alt="Godha Collections"
+                width={160}
+                height={64}
                 className="h-14 md:h-16 w-auto object-contain transition-transform duration-500 group-hover:scale-105 relative z-10 drop-shadow-lg"
+                priority
               />
             </div>
           </Link>

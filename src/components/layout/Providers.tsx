@@ -2,7 +2,12 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { Toaster } from '@/components/ui/sonner';
-import { WhatsAppButton } from '@/components/shared/WhatsAppButton';
+import dynamic from 'next/dynamic';
+
+const WhatsAppButton = dynamic(
+  () => import('@/components/shared/WhatsAppButton').then((m) => m.WhatsAppButton),
+  { ssr: false }
+);
 
 /**
  * Client boundary that wraps the entire app.

@@ -125,6 +125,7 @@ export default function Home() {
                     src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=987&auto=format&fit=crop"
                     alt="Kanchivaram silk saree on mannequin"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 60vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     priority
                   />
@@ -144,7 +145,9 @@ export default function Home() {
                     src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=987&auto=format&fit=crop"
                     alt="Ethnic wear collection on mannequin"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 24vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -159,7 +162,9 @@ export default function Home() {
                     src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=983&auto=format&fit=crop"
                     alt="Indo-western dress collection"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 24vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -244,7 +249,9 @@ export default function Home() {
                   src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=987&auto=format&fit=crop"
                   alt="Ethnic wear collection"
                   fill
+                  sizes="(max-width: 768px) 100vw, 66vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                 <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
@@ -271,7 +278,9 @@ export default function Home() {
                   src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=987&auto=format&fit=crop"
                   alt="Saree collection"
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
                 <div className="absolute inset-0 p-5 flex flex-col justify-end">
@@ -294,7 +303,9 @@ export default function Home() {
                   src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=983&auto=format&fit=crop"
                   alt="Dress collection"
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
                 <div className="absolute inset-0 p-5 flex flex-col justify-end">

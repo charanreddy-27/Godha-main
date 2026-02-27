@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
@@ -42,12 +41,9 @@ export function PageHeader({
         >
           {/* Breadcrumbs */}
           {breadcrumbs.length > 0 && (
-            <motion.nav
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+            <nav
               className={cn(
-                'flex items-center gap-2 text-sm text-royal-200 mb-6',
+                'flex items-center gap-2 text-sm text-royal-200 mb-6 animate-fade-in-up',
                 align === 'center' && 'justify-center'
               )}
             >
@@ -74,29 +70,25 @@ export function PageHeader({
                   )}
                 </div>
               ))}
-            </motion.nav>
+            </nav>
           )}
 
           {/* Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
+          <h1
+            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight animate-fade-in-up"
+            style={{ animationDelay: '100ms' }}
           >
             {title}
-          </motion.h1>
+          </h1>
 
           {/* Subtitle */}
           {subtitle && (
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-xl text-royal-100 max-w-2xl mx-auto leading-relaxed"
+            <p
+              className="text-lg md:text-xl text-royal-100 max-w-2xl mx-auto leading-relaxed animate-fade-in-up"
+              style={{ animationDelay: '200ms' }}
             >
               {subtitle}
-            </motion.p>
+            </p>
           )}
         </div>
       </div>
